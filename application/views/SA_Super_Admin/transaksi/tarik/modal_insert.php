@@ -1,0 +1,179 @@
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<div class="modal" id="insertModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Penarikan Saldo</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- <?php echo form_open_multipart('c_transaksi/setorSampah')?> -->
+      <form class="form-horizontal form-bordered" name="autoSumForm" autocomplete="off" action="<?php echo base_url().'c_tarik_saldo/insert/' ?>" method="post">
+      <form name="autoSumForm">
+
+
+            <div class="modal-body">
+        <!-- <div class="row mb-3">
+        <div class="col-lg-12">
+        <span>Jenis Sampah :</span>
+        <div class="input-group">
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchModal" ><i class="fa fa-search"></i></button>
+        </span>
+        <input type="text" name="jenis" id="jenis" class="form-control center" placeholder="Jenis Sampah"  >
+        <input type="text" name="sampah_master_id" id="sampah_master_id" class="form-control center" placeholder="Jenis Sampah"  hidden>
+        </div>
+        </div>
+        </div> -->
+        <!-- <div class="row ml-3">
+      <div class="col-lg-7">
+      <div class="input-group input-group-sm mb-3">
+      <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroup-sizing-sm">Tanggal</span>
+        </div>
+        <input type="date"  name="tanggal" id="tanggal" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" >
+      </div>
+      </div>
+      </div> -->
+      <input type="text" name="nasabah_id" value=" <?php echo $this->session->userdata('nasabah_id')?>" hidden>
+      <div class="row ml-3">
+      <div class="col-lg-7">
+      <div class="input-group input-group-sm mb-3">
+      <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroup-sizing-sm">No.Transaksi</span>
+        </div>
+        <input type="text"  name="transaksi_id" id="transaksi_id" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="<?php $kode_transaksi = $this->m_transaksi->Kode_otomatis(); 
+        echo $kode_transaksi+1;?>"  disabled>
+      </div>
+      </div>
+      </div>
+      <div class="row ml-3">
+      <div class="col-lg-12">
+      <div class="input-group input-group-sm mb-3">
+      <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroup-sizing-sm">Nasabah</span>
+        </div>
+       <select name="nasabah_id" id="nasabah_id">
+       <?php if($this->session->userdata('user_level') == 'U_User'){?>
+        <option value="<?php echo $this->session->userdata('nasabah_id')?>"><?php echo $this->session->userdata('nasabah_nama')?></option>
+        <?php }else{?>
+          <?php foreach($nasabah as $n){?>
+        <option value="<?php echo $n->nasabah_id?>"><?php echo $n->nasabah_nama?></option>
+        <?php } ?>
+          <?php }?>
+       </select>
+       
+      </div>
+      </div>
+      </div>
+      <div class="row ml-3">
+      <div class="col-lg-11">
+      <div class="input-group input-group-sm mb-3">
+      <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroup-sizing-sm">Jumlah Penarikan Saldo</span>
+        </div>
+        <input type="number" min="0" name="nominal_keluar" id="nominal_keluar" class="form-control" aria-label="Sizing example input" >
+      </div>
+      </div>
+      </div>  
+      <!-- <div class="row">
+      <div class="col-lg-8">
+      <div class="input-group input-group-sm mb-3">
+      <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroup-sizing-sm">Jumlah Harga</span>
+        </div>
+        <input type="number" min="0" name="jml_harga" id="jml_harga" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" >
+      </div>
+      </div> -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-outline-primary">Tarik</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- <script type="text/javascript">
+        $(document).ready(function(){
+                $('#reff_sampah_id').change(function(){
+                        var id=$(this).val();
+                        $.ajax({
+                                url : "<?php echo base_url().'c_setor/get_sampah_id';?>",
+                                method : "POST",
+                                data : {id: id},
+                                async : false,
+                        dataType : 'json',
+                                success: function(data){
+                                        var html = '';
+                            var i;
+                            for(i=0; i<data.length; i++){
+                                html += '<option>'+data[i].harga+'</option>';
+                            }
+                            $('#harga').html(html);
+                                         
+                                }
+                        });
+                });
+        });
+</script> -->
+<!-- <script>
+    function autofill(){
+        var reff_sampah_id =document.getElementById('reff_sampah_id').value;
+        $.ajax({
+                       url:"<?php echo base_url().'c_setor/get_sampah_id';?>",
+                       data:'&reff_sampah_id='+reff_sampah_id,
+                       success:function(data){
+                           var hasil = JSON.parse(data);  
+                     
+            $.each(hasil, function(key,val){ 
+                 
+               document.getElementById('harga').value=val.harga;
+                                
+                     
+                });
+            }
+                   });
+                   
+    };
+</script> -->
+<!-- <script type="text/javascript">
+	$('#reff_sampah_id').change(function() { 
+		var reff_sampah_id = $(this).val(); 
+		$.ajax({
+			type: 'POST', 
+			url: '<?php echo base_url().'c_setor/get_sampah_id';?>', 
+			data: 'reff_sampah_id=' + reff_sampah_id, 
+			success: function(response) { 
+				$('#harga').html(response); 
+			}
+		});
+	});
+ 
+</script> -->
+<script>
+    $('.select2').select2();
+</script>
+<script>
+
+function startCalc(){
+
+interval = setInterval("calc()",1);}
+
+function calc(){
+
+one = document.autoSumForm.harga.value;
+
+two = document.autoSumForm.jml_kg.value;
+
+
+document.autoSumForm.jml_harga.value = (one * 1) * (two * 1);}
+
+function stopCalc(){
+
+clearInterval(interval);}
+
+</script>
